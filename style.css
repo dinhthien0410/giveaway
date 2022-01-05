@@ -1,0 +1,129 @@
+body {
+  background-image: url("assets/background-t.svg");
+  font-family: "Calistoga", cursive;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#my-canvas {
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+select {
+  width: 300px;
+  height: 70px;
+  color: #db5015;
+  background-color: #ffac88;
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  font-size: 40px;
+  text-align: center;
+}
+.congratulation {
+  background: url(assets/chucmung.svg);
+  width: 946px;
+  height: 305px;
+}
+#banner {
+  margin-top: 100px;
+}
+
+.randomNumber {
+  width: 332px;
+  margin-left: 10px;
+  height: 332px;
+  background: url(assets/oquayso.svg);
+}
+
+#quay {
+  cursor: pointer;
+  margin-left: 1100px;
+  margin-top: -500px;
+  width: 205px;
+  height: 189px;
+  background: url(assets/quaytiep.svg);
+}
+
+.randomButton {
+  cursor: pointer;
+  margin-top: 80px;
+  width: 370px;
+  height: 128px;
+  background: url(assets/quayso.svg);
+}
+
+.confirmButton {
+  cursor: pointer;
+  width: 370px;
+  height: 128px;
+  background: url(assets/xacnhan.svg);
+}
+
+#randomNumber1 {
+  text-align: center;
+  font-size: 150px;
+  margin-top: 70px;
+  font-weight: bold;
+  color: white;
+}
+
+#randomNumber2 {
+  text-align: center;
+  font-size: 150px;
+  margin-top: 70px;
+  font-weight: bold;
+  color: white;
+}
+
+#randomNumber3 {
+  text-align: center;
+  font-size: 150px;
+  margin-top: 70px;
+  font-weight: bold;
+  color: white;
+}
+
+#randomNumber4 {
+  text-align: center;
+  font-size: 150px;
+  margin-top: 70px;
+  font-weight: bold;
+  color: white;
+}
+
+.staff{
+  font-size: 50px;
+  font-family: "Markazi Text", serif;
+}
+
+.priseAndGifts {
+  font-family: "Pattaya", sans-serif;
+  font-size: 80px;
+}
+
+#myProgress {
+  width: 300px;
+  background-color: crimson;
+  margin-top: 50px;
+}
+
+#myBar {
+  width: 1%;
+  height: 10px;
+  background-color: #ddd;
+}
+
+#resetbutton{
+  display:none;
+}

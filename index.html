@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDraw</title>
+    <!-- jquery-lib -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="app.js"></script>
+    <script src="data.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Markazi+Text&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+
+<body>
+    <canvas id="my-canvas" hidden="true"></canvas>
+    </canvas>
+    <div style="display: none;">
+        <audio controls autoplay id="music">
+            <source src="xoso.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    <div id="banner" style="display: flex; margin-top: 250px;">
+        <div class="randomNumber">
+            <p id="randomNumber1"></p>
+        </div>
+        <div class="randomNumber">
+            <p id="randomNumber2"></p>
+        </div>
+        <div class="randomNumber">
+            <p id="randomNumber3"></p>
+        </div>
+        <div class="randomNumber">
+            <p id="randomNumber4"></p>
+        </div>
+    </div>
+    <div id="loading">
+    </div>
+    <div class="custom-select" id="selectValue" style="margin-top: 50px;margin-left: 10px;">
+        <select name="" id="prise">
+            <option value="1">GIẢI NHẤT</option>
+            <option value="2">GIẢI NHÌ</option>
+            <option value="3">GIẢI BA</option>
+        </select>
+        <select style="margin-left: 20px;" name="" id="vp">
+            <option value="1">VP HN</option>
+            <option value="2">VP HCM</option>
+        </select>
+    </div>
+    <div style="color: white;">
+        <div id="staffHasPrise"></div>
+    </div>
+    <div id="changeButton">
+        <div class="randomButton" onclick="roll()"></div>
+    </div>
+    <div style="display: flex; margin-top: -30px;">
+        <div id="continueButton">
+        </div>
+    </div>
+    <div id="resetbutton">
+        <button style="margin-top: 40px;" onclick="setData()">Làm mới</button>
+    </div>
+</body>
+
+</html>
