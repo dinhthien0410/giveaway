@@ -33,20 +33,23 @@ function showStaffAndPrise(dp) {
     };
     const daden = staffhasprise.gender === "1" ? "ANH" : "CHỊ";
     const vp = dp === 1 ? "VP HN" : "VP HCM";
-    // var confettiSettings = { target: 'my-canvas' };
-    // var confetti = new ConfettiGenerator(confettiSettings);
-    // document.getElementById("my-canvas").hidden = false;
-    // confetti.render();
+    var confettiSettings = { target: 'my-canvas' };
+    var confetti = new ConfettiGenerator(confettiSettings);
+    document.getElementById("my-canvas").hidden = false;
+    confetti.render();
     setTimeout(function () {
+        confetti.clear();
         document.getElementById("my-canvas").hidden = true;
-    }, 4000)
+    }, 3000)
     document.getElementById("banner").innerHTML = (`<div class="congratulation"> 
     </div>`)
     document.getElementById("staffHasPrise").innerHTML = (`
+    <div class="awards">
         <p class="priseAndGifts">${prise}</p>
         <p class="staff">${daden} ${staffhasprise.name}</p>
         <p class="staff">KHỐI ${staffhasprise.department} - ${vp}</p>
-        <p class="priseAndGifts">${value}</p>`);
+        <p class="priseAndGifts">${value}</p>
+    </div>`);
     document.getElementById("changeButton").style.display = "none";
     document.getElementById("selectValue").hidden = true;
     document.getElementById("loading").hidden = true;
@@ -73,7 +76,7 @@ function setStaffHasPriseToLocal(listStaff, staffRandom, dp) {
             localStorage.setItem('listStaffHasPrise', JSON.stringify(listStaffHasPrise));
             setTimeout(function () {
                 setStaffhasPrise(listStaff[i], dp);
-            }, 000);
+            }, 8000);
         }
     }
 }
@@ -187,11 +190,12 @@ function ConfettiGenerator(params) {
     var appstate = {
         target: 'confetti-holder', // Id of the canvas
         max: 300, // Max itens to render
-        size: 10, // prop size
+        size: 2, // prop size
         animate: true, // Should animate?
         respawn: true, // Should confettis be respawned when getting out of screen?
         props: ['circle', 'square', 'triangle', 'line'], // Types of confetti
-        colors: [[255, 228, 80], [255, 255, 109], [255, 255, 137], [255, 255, 165]], // Colors to render confetti
+        // colors: [[255, 228, 80], [255, 255, 109], [255, 255, 137], [255, 255, 165]], // Colors to render confetti
+        colors: [[165,104,246],[230,61,135],[0,199,228],[253,214,126]], // Colors to render confetti
         clock: 20, // Speed of confetti fall
         interval: null, // Draw interval holder
         rotate: false, // Whenever to rotate a prop

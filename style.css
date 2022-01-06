@@ -57,9 +57,11 @@ select {
   font-weight: bold;
   border-radius: 4px;
   border: none;
-  font-size: 1.6vw;
+  font-size: 2vw;
   text-align: center;
-  padding: 5px;
+  height: 3vw;
+  width:15vw;
+  margin-top: 2vw;
 }
 
 .winner {
@@ -70,7 +72,7 @@ select {
 }
 
 #staffHasPrise .winner-staff {
-  margin-top: 12px;
+  margin-top: 2vw;
   font-size: 3vw;
   line-height: initial;
   font-family: "Markazi Text", serif;
@@ -92,13 +94,13 @@ select {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin-top: 5%;
 }
 
 #banner {
   width: 60%;
   display: flex;
   justify-content: space-around;
-  padding-top: 5%;
 }
 
 .randomNumber {
@@ -132,16 +134,17 @@ select {
   margin-top: 15px;
 }
 
-#quay {
+#continueButton {
   position: absolute;
-  height: 100%;
+  left: 70%;
+  top: 55%;
+  width: 100%;
 }
 
 #changeButton {
   display: flex;
   justify-content: center;
-  padding: 10px;
-  margin-top: 16px;
+  margin-top: 3vw;
 }
 
 .randomButton {
@@ -168,6 +171,8 @@ select {
   font-family: "Markazi Text", serif !important;
   font-size: 2vw;
   line-height: 2vw;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
 }
 
 .priseAndGifts {
