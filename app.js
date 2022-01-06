@@ -12,99 +12,116 @@ const animation = (qSelector, start = 0, end, duration = 1000) => {
     window.requestAnimationFrame(step);
 };
 
-function setStaffhasPrise(staff) {
-    document.getElementById("loading").hidden = true;
-    document.getElementById("staffHasPrise").innerHTML = (`<p style="margin-top:50px;font-size:70px;font-family: 'Markazi Text', serif;">${staff.name} - ${staff.idst}</p>`);
-    document.getElementById("changeButton").innerHTML = (`<div class="confirmButton" onclick="showStaffAndPrise()"></div>`)
+function setStaffhasPrise(staff, dp) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("staffHasPrise").innerHTML = (`<p class="winner-staff">${staff.name} - ${staff.idst}</p>`);
+    document.getElementById("changeButton").innerHTML = (`<div class="confirmButton"  onclick="showStaffAndPrise(${dp})"></div>`)
 }
 
-function showStaffAndPrise() {
+function showStaffAndPrise(dp) {
     const staffhasprise = JSON.parse(localStorage.getItem("staffHasPrise") || "[]");
-    const prize = getPrise();
+    const prize = staffhasprise.hasPrise;
+    if (prize === 1) {
+        prise = "Giải Nhất";
+        value = "Mười tỏi"
+    } else if (prize === 2) {
+        prise = "Giải Nhì";
+        value = "5 tỏi"
+    } else {
+        prise = "Giải Ba";
+        value = "2 tỏi";
+    };
     const daden = staffhasprise.gender === "1" ? "ANH" : "CHỊ";
-    const vp = getVp() === 1 ? "VP HN" : "VP HCM";
-    const value = getValue();
-    var confettiSettings = { target: 'my-canvas' };
-    var confetti = new ConfettiGenerator(confettiSettings);
-    document.getElementById("my-canvas").hidden = false;
-    confetti.render();
+    const vp = dp === 1 ? "VP HN" : "VP HCM";
+    // var confettiSettings = { target: 'my-canvas' };
+    // var confetti = new ConfettiGenerator(confettiSettings);
+    // document.getElementById("my-canvas").hidden = false;
+    // confetti.render();
     setTimeout(function () {
         document.getElementById("my-canvas").hidden = true;
     }, 4000)
-    document.getElementById("banner").innerHTML = (`<div style="margin-top: -50px;" class="congratulation"> 
+    document.getElementById("banner").innerHTML = (`<div class="congratulation"> 
     </div>`)
     document.getElementById("staffHasPrise").innerHTML = (`
-    <div style="text-align: center;">
-        <p class="priseAndGifts" style="margin-top:-100px;">${prize}</p>
-        <p class="staff" style="margin-top:-25px">${daden} ${staffhasprise.name}</p>
-        <p class="staff" style="margin-top:-40px">KHỐI ${staffhasprise.department} - ${vp}</p>
-        <p class="priseAndGifts" style="margin-top: -5px;">${value}</p>
-    </div>`);
-    document.getElementById("changeButton").hidden = true;
+        <p class="priseAndGifts">${prise}</p>
+        <p class="staff">${daden} ${staffhasprise.name}</p>
+        <p class="staff">KHỐI ${staffhasprise.department} - ${vp}</p>
+        <p class="priseAndGifts">${value}</p>`);
+    document.getElementById("changeButton").style.display = "none";
     document.getElementById("selectValue").hidden = true;
     document.getElementById("loading").hidden = true;
-    localStorage.removeItem("staffHasPrise");
-    document.getElementById("continueButton").innerHTML = (`<div id="quay" onclick="setInit()"></div>`);
-    //document.getElementById("resetbutton").innerHTML = (`<button style="margin-top: 40px;" onclick="setData()">Làm mới</button>`);
+    document.getElementById("continueButton").hidden = false;
 }
 
-function randomStaff() {
-    const listStaff = JSON.parse(localStorage.getItem("listStaff") || "[]");
-    const text = listStaff[Math.floor(Math.random() * listStaff.length)];
+function setStaffHasPriseToLocal(listStaff, staffRandom, dp) {
+    let listStaffHasPrise = [];
+    const value = getPrise();
     for (let i = 0; i < listStaff.length; i++) {
-        if (listStaff[i].idst === text.idst) {
-            listStaff[i].hasPrise = 1;
+        if (listStaff[i].idst === staffRandom.idst) {
+            listStaff[i].hasPrise = value;
             localStorage.setItem("staffHasPrise", JSON.stringify(listStaff[i]));
+            let storage = localStorage.getItem('listStaffHasPrise');
+            if (storage) {
+                listStaffHasPrise = JSON.parse(storage);
+            }
+            let st = listStaff.find(i => listStaff === listStaff[i]);
+            if (st) {
+                setStaffHasPriseToLocal(listStaff.splice(i, 1), staffRandom);
+            } else {
+                listStaffHasPrise.push(st);
+            }
+            localStorage.setItem('listStaffHasPrise', JSON.stringify(listStaffHasPrise));
             setTimeout(function () {
-                setStaffhasPrise(listStaff[i])
-                listStaff.splice(i, 1);
-                localStorage.setItem("listStaff", JSON.stringify(listStaff));
-            }, 8000);
+                setStaffhasPrise(listStaff[i], dp);
+            }, 000);
         }
     }
-    return text.idst;
+}
+
+
+function randomStaff() {
+    const vp = getVp();
+    if (vp === 1) {
+        listStaff = male;
+        dp = 1;
+    }
+    if (vp === 0) {
+        listStaff = female;
+        dp = 0;
+    }
+    const staffRandom = listStaff[Math.floor(Math.random() * listStaff.length)];
+    setStaffHasPriseToLocal(listStaff, staffRandom, dp);
+    console.log(staffRandom.idst);
+    return staffRandom.idst;
 }
 
 function getPrise() {
     const prise = document.querySelector("#prise");
     if (prise.value === "1") {
-        return "Giải nhất";
+        return 1;
     } else if (prise.value === "2") {
-        return "Giải nhì";
+        return 2;
     } else if (prise.value === "3") {
-        return "Giải ba";
-    }
-}
-
-function getValue() {
-    const prise = document.querySelector("#prise");
-    if (prise.value === "1") {
-        return "Iphone 13 Pro Max";
-    } else if (prise.value === "2") {
-        return "1,000,000,000Đ";
-    } else if (prise.value === "3") {
-        return "2,000,000Đ";
+        return 3;
     }
 }
 
 function getVp() {
     const vp = document.querySelector("#vp");
     if (vp.value === "1") {
-        localStorage.setItem("listStaff", JSON.stringify(male));
         return 1;
     } else if (vp.value === "2") {
-        localStorage.setItem("listStaff", JSON.stringify(female));
         return 0;
     }
 }
 
 function loading() {
+    document.getElementById("selectValue").style.display = "none";
     document.getElementById("loading").innerHTML = (`
     <div id="myProgress">
         <div id="myBar"></div>
     </div>`);
     document.getElementById("changeButton").innerHTML = "";
-    document.getElementById("selectValue").hidden = true;
     move();
 }
 
@@ -125,13 +142,18 @@ function roll() {
         try {
             var myMusic = document.getElementById("music");
             myMusic.play();
-            loading();
             const random = [randomStaff()];
             const randomIdst = random.toString().split("");
             rollingNumber("#randomNumber1", 4, randomIdst[0]);
             rollingNumber("#randomNumber2", 7, randomIdst[1]);
             rollingNumber("#randomNumber3", 10, randomIdst[2]);
             rollingNumber("#randomNumber4", 13, randomIdst[3]);
+            async function asyncGetPrise() {
+                const result = await getPrise();
+
+                loading();
+            }
+            asyncGetPrise()
             console.log(result);
         } catch (error) {
             console.log(error);
@@ -165,11 +187,11 @@ function ConfettiGenerator(params) {
     var appstate = {
         target: 'confetti-holder', // Id of the canvas
         max: 300, // Max itens to render
-        size: 3, // prop size
+        size: 10, // prop size
         animate: true, // Should animate?
         respawn: true, // Should confettis be respawned when getting out of screen?
         props: ['circle', 'square', 'triangle', 'line'], // Types of confetti
-        colors: [[165, 104, 246], [230, 61, 135], [0, 199, 228], [253, 214, 126]], // Colors to render confetti
+        colors: [[255, 228, 80], [255, 255, 109], [255, 255, 137], [255, 255, 165]], // Colors to render confetti
         clock: 20, // Speed of confetti fall
         interval: null, // Draw interval holder
         rotate: false, // Whenever to rotate a prop

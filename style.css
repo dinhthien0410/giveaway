@@ -1,11 +1,43 @@
-body {
-  background-image: url("assets/background-t.svg");
+* {
+  box-sizing: inherit;
   font-family: "Calistoga", cursive;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+html {
+  /* 10px */
+  font-size: 62.5%;
+  line-height: 1.6rem;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-image: url("assets/background-t.png");
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.logo{
+  position: absolute;
+  top:2%;
+  left: 43%;
+  right: 43%;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
 }
 
 #my-canvas {
@@ -20,110 +52,144 @@ body {
 }
 
 select {
-  width: 300px;
-  height: 70px;
   color: #db5015;
   background-color: #ffac88;
   font-weight: bold;
   border-radius: 4px;
   border: none;
-  font-size: 40px;
+  font-size: 1.6vw;
+  text-align: center;
+  padding: 5px;
+}
+
+.winner {
+  color: white;
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
+
+#staffHasPrise .winner-staff {
+  margin-top: 12px;
+  font-size: 3vw;
+  line-height: initial;
+  font-family: "Markazi Text", serif;
+  text-align: center;
+}
+
 .congratulation {
   background: url(assets/chucmung.svg);
-  width: 946px;
-  height: 305px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 70vw;
+  height: 15vw;
 }
+
+.content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
 #banner {
-  margin-top: 100px;
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 5%;
 }
 
 .randomNumber {
-  width: 332px;
-  margin-left: 10px;
-  height: 332px;
+  width: calc(25% - 10px);
   background: url(assets/oquayso.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 15vw;
+  display: flex;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.randomNumber p {
+  font-size: 7vw;
+  font-weight: bold;
+  color: white;
+  line-height: initial;
+}
+
+#loading {
+  width : 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#selectValue {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
 
 #quay {
-  cursor: pointer;
-  margin-left: 1100px;
-  margin-top: -500px;
-  width: 205px;
-  height: 189px;
-  background: url(assets/quaytiep.svg);
+  position: absolute;
+  height: 100%;
+}
+
+#changeButton {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin-top: 16px;
 }
 
 .randomButton {
   cursor: pointer;
-  margin-top: 80px;
-  width: 370px;
-  height: 128px;
   background: url(assets/quayso.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 15vw;
+  height: 5vw;
 }
 
 .confirmButton {
   cursor: pointer;
-  width: 370px;
-  height: 128px;
   background: url(assets/xacnhan.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 15vw;
+  height: 5vw;
 }
 
-#randomNumber1 {
-  text-align: center;
-  font-size: 150px;
-  margin-top: 70px;
-  font-weight: bold;
-  color: white;
-}
-
-#randomNumber2 {
-  text-align: center;
-  font-size: 150px;
-  margin-top: 70px;
-  font-weight: bold;
-  color: white;
-}
-
-#randomNumber3 {
-  text-align: center;
-  font-size: 150px;
-  margin-top: 70px;
-  font-weight: bold;
-  color: white;
-}
-
-#randomNumber4 {
-  text-align: center;
-  font-size: 150px;
-  margin-top: 70px;
-  font-weight: bold;
-  color: white;
-}
-
-.staff{
-  font-size: 50px;
-  font-family: "Markazi Text", serif;
+.staff {
+  font-family: "Markazi Text", serif !important;
+  font-size: 2vw;
+  line-height: 2vw;
 }
 
 .priseAndGifts {
-  font-family: "Pattaya", sans-serif;
-  font-size: 80px;
+  font-family: "Pattaya", sans-serif !important;
+  font-size: 5vw;
+  line-height: 5vw;
+  margin: 8px 0;
 }
 
 #myProgress {
-  width: 300px;
+  width: 20%;
   background-color: crimson;
-  margin-top: 50px;
+  margin-top: 16px;
+  height: 0.8vw;
 }
 
 #myBar {
   width: 1%;
-  height: 10px;
+  height: 0.8vw;
   background-color: #ddd;
 }
 
-#resetbutton{
-  display:none;
+#resetbutton {
+  display: none;
 }
