@@ -141,7 +141,7 @@ function rollingNumber(aclass, index, numberAfterRandom) {
         }, 100 + i * 500);
     }
     setTimeout(function () {
-        animation(aclass, 0, numberAfterRandom, 500);
+        animation(aclass, 0, numberAfterRandom, 650);
     }, 100 + index * 500);
 }
 
