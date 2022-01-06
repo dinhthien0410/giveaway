@@ -12,13 +12,18 @@ const animation = (qSelector, start = 0, end, duration = 1000) => {
     window.requestAnimationFrame(step);
 };
 
-function setStaffhasPrise(staff, dp) {
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("staffHasPrise").innerHTML = (`<p class="winner-staff">${staff.name} - ${staff.idst}</p>`);
-    document.getElementById("changeButton").innerHTML = (`<div class="confirmButton"  onclick="showStaffAndPrise(${dp})"></div>`)
+function setInit() {
+    window.location.reload();
+    console.clear();
 }
 
-function showStaffAndPrise(dp) {
+function setStaffhasPrise(staff) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("staffHasPrise").innerHTML = (`<p class="winner-staff">${staff.name} - ${staff.idst}</p>`);
+    document.getElementById("changeButton").innerHTML = (`<div class="confirmButton"  onclick="showStaffAndPrise()"></div>`)
+}
+
+function showStaffAndPrise() {
     const staffhasprise = JSON.parse(localStorage.getItem("staffHasPrise") || "[]");
     const prize = staffhasprise.hasPrise;
     if (prize === 1) {
@@ -31,8 +36,14 @@ function showStaffAndPrise(dp) {
         prise = "Giải Ba";
         value = "2 tỏi";
     };
-    const daden = staffhasprise.gender === "1" ? "ANH" : "CHỊ";
-    const vp = dp === 1 ? "VP HN" : "VP HCM";
+    const daden = staffhasprise.gender;
+    if (staffhasprise.vp === "1") {
+        vp = "VP HN";
+    } else if ( staffhasprise.vp === "2") {
+        vp = "VP ĐN";
+    } else {
+        vp = "VP HCM"
+    };
     var confettiSettings = { target: 'my-canvas' };
     var confetti = new ConfettiGenerator(confettiSettings);
     document.getElementById("my-canvas").hidden = false;
@@ -47,7 +58,7 @@ function showStaffAndPrise(dp) {
     <div class="awards">
         <p class="priseAndGifts">${prise}</p>
         <p class="staff">${daden} ${staffhasprise.name}</p>
-        <p class="staff">KHỐI ${staffhasprise.department} - ${vp}</p>
+        <p class="staff">${staffhasprise.department} - ${vp}</p>
         <p class="priseAndGifts">${value}</p>
     </div>`);
     document.getElementById("changeButton").style.display = "none";
@@ -56,7 +67,7 @@ function showStaffAndPrise(dp) {
     document.getElementById("continueButton").hidden = false;
 }
 
-function setStaffHasPriseToLocal(listStaff, staffRandom, dp) {
+function setStaffHasPriseToLocal(listStaff, staffRandom) {
     let listStaffHasPrise = [];
     const value = getPrise();
     for (let i = 0; i < listStaff.length; i++) {
@@ -67,15 +78,13 @@ function setStaffHasPriseToLocal(listStaff, staffRandom, dp) {
             if (storage) {
                 listStaffHasPrise = JSON.parse(storage);
             }
-            let st = listStaff.find(i => listStaff === listStaff[i]);
+            let st = listStaff[i];
             if (st) {
-                setStaffHasPriseToLocal(listStaff.splice(i, 1), staffRandom);
-            } else {
                 listStaffHasPrise.push(st);
             }
             localStorage.setItem('listStaffHasPrise', JSON.stringify(listStaffHasPrise));
             setTimeout(function () {
-                setStaffhasPrise(listStaff[i], dp);
+                setStaffhasPrise(listStaff[i]);
             }, 8000);
         }
     }
@@ -85,16 +94,13 @@ function setStaffHasPriseToLocal(listStaff, staffRandom, dp) {
 function randomStaff() {
     const vp = getVp();
     if (vp === 1) {
-        listStaff = male;
-        dp = 1;
+        listStaff = vphn;
     }
     if (vp === 0) {
-        listStaff = female;
-        dp = 0;
+        listStaff = vphcm;
     }
     const staffRandom = listStaff[Math.floor(Math.random() * listStaff.length)];
-    setStaffHasPriseToLocal(listStaff, staffRandom, dp);
-    console.log(staffRandom.idst);
+    setStaffHasPriseToLocal(listStaff, staffRandom);
     return staffRandom.idst;
 }
 
@@ -157,7 +163,6 @@ function roll() {
                 loading();
             }
             asyncGetPrise()
-            console.log(result);
         } catch (error) {
             console.log(error);
         }
@@ -421,864 +426,1709 @@ function ConfettiGenerator(params) {
     }
 }
 
-const male = [
+const vphn = [
     {
         "id": "1",
         "idst": "0016",
         "name": "PHAN BÁCH",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "2",
         "idst": "0020",
         "name": "HOÀNG THỊ THU TRANG",
-        "department": "BAN TÀI CHÍNH KẾ TOÁN",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "3",
         "idst": "0022",
         "name": "TRẦN QUỲNH VI",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "gender": "CHỊ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "4",
         "idst": "0027",
         "name": "NGUYỄN THÀNH AN",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "5",
         "idst": "0028",
         "name": "NGUYỄN VIỆT AN",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "6",
         "idst": "0031",
         "name": "NGUYỄN THĂNG LONG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "7",
         "idst": "0042",
         "name": "NGUYỄN ĐỨC ANH",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "8",
         "idst": "0060",
         "name": "NGUYỄN THANH TUẤN",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "9",
         "idst": "0068",
         "name": "BẠCH HOÀI KHANH",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "10",
         "idst": "0085",
         "name": "PHẠM THU TRANG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "gender": "CHỊ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "11",
         "idst": "0086",
         "name": "MAI THỊ HƯƠNG",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "12",
         "idst": "0096",
         "name": "PHAN MINH HẢI",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "13",
         "idst": "0108",
         "name": "ĐINH THỊ MINH KHÁNH",
-        "department": "MUA HÀNG & HTKD",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "14",
         "idst": "0144",
         "name": "PHẠM DIỄM QUỲNH",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "15",
         "idst": "0149",
         "name": "NGUYỄN THỊ HẢI LINH",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "16",
         "idst": "0185",
         "name": "TẠ CÔNG CHIẾN",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "17",
         "idst": "0195",
         "name": "NGUYỄN ĐỨC THIỆN",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "18",
-        "idst": "0266",
-        "name": "HUỲNH PHƯỚC THUẬN",
-        "department": "DỊCH VỤ TRIỂN KHAI- ĐÀ NẴNG",
+        "idst": "0270",
+        "name": "TRẦN MẠNH HÀ",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "19",
-        "idst": "0270",
-        "name": "TRẦN MẠNH HÀ",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0279",
+        "name": "NGUYỄN QUỐC TOẢN",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "20",
-        "idst": "0279",
-        "name": "NGUYỄN QUỐC TOẢN",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "0345",
+        "name": "TÔ DUY LINH",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "21",
-        "idst": "0345",
-        "name": "TÔ DUY LINH",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "0347",
+        "name": "ĐINH TỐ QUYÊN",
+        "gender": "CHỊ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "22",
-        "idst": "0347",
-        "name": "ĐINH TỐ QUYÊN",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "0356",
+        "name": "ĐẶNG TÙNG ANH",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "23",
-        "idst": "0356",
-        "name": "ĐẶNG TÙNG ANH",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0384",
+        "name": "NGUYỄN THU HÀ",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "24",
-        "idst": "0384",
-        "name": "NGUYỄN THU HÀ",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0389",
+        "name": "BÙI TUẤN ANH",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "25",
-        "idst": "0389",
-        "name": "BÙI TUẤN ANH",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0395",
+        "name": "LÊ THANH HIẾU",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "26",
-        "idst": "0395",
-        "name": "LÊ THANH HIẾU",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0402",
+        "name": "ĐINH VIẾT LUÂN",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "27",
-        "idst": "0401",
-        "name": "HUỲNH THÀNH CÔNG",
-        "department": "DỊCH VỤ TRIỂN KHAI- ĐÀ NẴNG",
+        "idst": "0421",
+        "name": "NGUYỄN MẠNH DŨNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "28",
-        "idst": "0402",
-        "name": "ĐINH VIẾT LUÂN",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "0438",
+        "name": "PHẠM VĂN QUYẾT",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "29",
-        "idst": "0421",
-        "name": "NGUYỄN MẠNH DŨNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0440",
+        "name": "NGUYỄN XUÂN QUANG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "30",
-        "idst": "0438",
-        "name": "PHẠM VĂN QUYẾT",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "0446",
+        "name": "LÊ VIỆT HƯNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "31",
-        "idst": "0440",
-        "name": "NGUYỄN XUÂN QUANG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0453",
+        "name": "TRẦN VIỆT PHƯƠNG",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "32",
-        "idst": "0446",
-        "name": "LÊ VIỆT HƯNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0454",
+        "name": "NGUYỄN THỊ PHƯỢNG",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "33",
-        "idst": "0453",
-        "name": "TRẦN VIỆT PHƯƠNG",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "0461",
+        "name": "LÊ ĐỨC CƯỜNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "34",
-        "idst": "0454",
-        "name": "NGUYỄN THỊ PHƯỢNG",
-        "department": "BAN TÀI CHÍNH KẾ TOÁN",
+        "idst": "3003",
+        "name": "BÙI ĐÌNH KHÁNH",
+        "gender": "ANH ",
+        "department": "TTPM",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "35",
-        "idst": "0461",
-        "name": "LÊ ĐỨC CƯỜNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3004",
+        "name": "VŨ ĐÌNH ĐỨC",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "36",
-        "idst": "3003",
-        "name": "BÙI ĐÌNH KHÁNH",
-        "department": "TRUNG TÂM PHẦN MỀM",
+        "idst": "3012",
+        "name": "BÙI NGỌC HƯƠNG",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "37",
-        "idst": "3004",
-        "name": "VŨ ĐÌNH ĐỨC",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3013",
+        "name": "NGUYỄN THU TRANG",
+        "gender": "CHỊ",
+        "department": "TTPM",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "38",
-        "idst": "3012",
-        "name": "BÙI NGỌC HƯƠNG",
-        "department": "MUA HÀNG & HTKD",
+        "idst": "3017",
+        "name": "VÕ QUÝ ĐỨC",
+        "gender": "ANH ",
+        "department": "TTPM",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "39",
-        "idst": "3013",
-        "name": "NGUYỄN THU TRANG",
-        "department": "TRUNG TÂM PHẦN MỀM",
+        "idst": "3019",
+        "name": "LÊ KIM THANH",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "40",
-        "idst": "3017",
-        "name": "VÕ QUÝ ĐỨC",
-        "department": "TRUNG TÂM PHẦN MỀM",
+        "idst": "3022",
+        "name": "PHẠM NGỌC HOÀNG NGÂN",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "41",
-        "idst": "3019",
-        "name": "LÊ KIM THANH",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "3024",
+        "name": "NGUYỄN HỮU DUY",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "42",
-        "idst": "3022",
-        "name": "PHẠM NGỌC HOÀNG NGÂN",
-        "department": "NHÂN SỰ & TRUYỀN THÔNG",
+        "idst": "3029",
+        "name": "NGUYỄN ANH TUẤN",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "43",
-        "idst": "3024",
-        "name": "NGUYỄN HỮU DUY",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "3032",
+        "name": "NGUYỄN VIỆT HƯNG",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "44",
-        "idst": "3029",
-        "name": "NGUYỄN ANH TUẤN",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3040",
+        "name": "LÊ THỊ THÙY AN",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "45",
-        "idst": "3032",
-        "name": "NGUYỄN VIỆT HƯNG",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "3041",
+        "name": "NGUYỄN QUANG THUẬN",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "46",
-        "idst": "3040",
-        "name": "LÊ THỊ THÙY AN",
-        "department": "NHÂN SỰ & TRUYỀN THÔNG",
+        "idst": "3043",
+        "name": "TRẦN VĂN DUY",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "47",
-        "idst": "3041",
-        "name": "NGUYỄN QUANG THUẬN",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "3045",
+        "name": "NGÔ MỸ NHẬT LINH",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "48",
-        "idst": "3043",
-        "name": "TRẦN VĂN DUY",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3047",
+        "name": "PHẠM THẾ CƯỜNG",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "49",
-        "idst": "3045",
-        "name": "NGÔ MỸ NHẬT LINH",
-        "department": "BAN TÀI CHÍNH KẾ TOÁN",
+        "idst": "3048",
+        "name": "PHẠM THANH HIẾU",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "50",
-        "idst": "3047",
-        "name": "PHẠM THẾ CƯỜNG",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "3053",
+        "name": "VŨ ĐỨC MINH HIẾU",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "51",
-        "idst": "3048",
-        "name": "PHẠM THANH HIẾU",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "3054",
+        "name": "NGUYỄN TUẤN DŨNG",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "52",
-        "idst": "3053",
-        "name": "VŨ ĐỨC MINH HIẾU",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "3055",
+        "name": "TRẦN VĂN NGHĨA",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "53",
-        "idst": "3054",
-        "name": "NGUYỄN TUẤN DŨNG",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "3056",
+        "name": "NGUYỄN PHÚC THANH",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "54",
-        "idst": "3055",
-        "name": "TRẦN VĂN NGHĨA",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3057",
+        "name": "NGUYỄN THU THUỲ",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "55",
-        "idst": "3056",
-        "name": "NGUYỄN PHÚC THANH",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3058",
+        "name": "NGUYỄN THUÝ HÀ",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "56",
-        "idst": "3057",
-        "name": "NGUYỄN THU THUỲ",
-        "department": "NHÂN SỰ & TRUYỀN THÔNG",
+        "idst": "3061",
+        "name": "ĐOÀN VIẾT HÙNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "57",
-        "idst": "3058",
-        "name": "NGUYỄN THUÝ HÀ",
-        "department": "MUA HÀNG & HTKD",
+        "idst": "3063",
+        "name": "NGUYỄN VIẾT ĐỨC",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "58",
-        "idst": "3061",
-        "name": "ĐOÀN VIẾT HÙNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3065",
+        "name": "NGÔ VĂN NHẬT",
+        "gender": "ANH ",
+        "department": "TTKD2",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "59",
-        "idst": "3063",
-        "name": "NGUYỄN VIẾT ĐỨC",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3067",
+        "name": "PHẠM THANH LONG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "60",
-        "idst": "3065",
-        "name": "NGÔ VĂN NHẬT",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "3068",
+        "name": "CAO MINH THỊNH",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "61",
-        "idst": "3067",
-        "name": "PHẠM THANH LONG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3070",
+        "name": "NGUYỄN MẠNH THẮNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "62",
-        "idst": "3068",
-        "name": "CAO MINH THỊNH",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3079",
+        "name": "ĐỖ MINH ANH",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "63",
-        "idst": "3070",
-        "name": "NGUYỄN MẠNH THẮNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "3081",
+        "name": "NGUYỄN QUỐC THÁI",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "64",
-        "idst": "3075",
-        "name": "HÀ ĐỨC TÀI",
-        "department": "DỊCH VỤ TRIỂN KHAI- ĐÀ NẴNG",
+        "idst": "3085",
+        "name": "TẠ HOÀNG TRANG",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "65",
-        "idst": "3079",
-        "name": "ĐỖ MINH ANH",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "3083",
+        "name": "NGUYỄN THỊ HOÀI TRANG",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "66",
-        "idst": "3081",
-        "name": "NGUYỄN QUỐC THÁI",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "3086",
+        "name": "HOÀNG VŨ DƯƠNG",
+        "gender": "ANH ",
+        "department": "TTKD1",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
     },
     {
         "id": "67",
-        "idst": "3085",
-        "name": "TẠ HOÀNG TRANG",
-        "department": "MUA HÀNG & HTKD",
+        "idst": "3090",
+        "name": "NGUYỄN DUY THÀNH",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "1"
+        "vp": "1"
+    },
+    {
+        "id": "68",
+        "idst": "3091",
+        "name": "NGUYỄN ĐỨC HOÀNG",
+        "gender": "ANH ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "69",
+        "idst": "3094",
+        "name": "NGUYỄN THỊ HÀ ANH",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "70",
+        "idst": "3095",
+        "name": "NGUYỄN HOÀNG NAM",
+        "gender": "ANH ",
+        "department": "TTKD1",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "71",
+        "idst": "3098",
+        "name": "NGUYỄN THANH TÙNG",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "72",
+        "idst": "3099",
+        "name": "DƯƠNG HOÀNG GIANG",
+        "gender": "ANH ",
+        "department": "TTPM",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "73",
+        "idst": "3100",
+        "name": "TRƯƠNG KHÁNH LINH",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "74",
+        "idst": "3101",
+        "name": "TÔ THẾ DŨNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "75",
+        "idst": "3102",
+        "name": "CHỬ VĂN HOÀNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "76",
+        "idst": "3104",
+        "name": "DƯƠNG QUANG PHÚC",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "77",
+        "idst": "3106",
+        "name": "LÊ NGỌC ANH",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "78",
+        "idst": "3108",
+        "name": "VŨ ĐÌNH TRUNG",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "79",
+        "idst": "3109",
+        "name": "NGUYỄN THỊ UYÊN",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "80",
+        "idst": "3111",
+        "name": "NGUYỄN KHÁNH LINH",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "81",
+        "idst": "3112",
+        "name": "LÊ THỊ THU HƯƠNG",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "82",
+        "idst": "3113",
+        "name": "NGUYỄN DUY LINH",
+        "gender": "ANH ",
+        "department": "TTPM",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "83",
+        "idst": "3114",
+        "name": "TRẦN VŨ VINH",
+        "gender": "ANH ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "84",
+        "idst": "3115",
+        "name": "NGUYỄN THỊ HẠNH",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "85",
+        "idst": "3117",
+        "name": "NGUYỄN HOÀNG DƯƠNG",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "86",
+        "idst": "3118",
+        "name": "NGUYỄN HOÀNG MINH",
+        "gender": "ANH ",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "87",
+        "idst": "3120",
+        "name": "PHẠM DUY HIỆP",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "88",
+        "idst": "3121",
+        "name": "NGÔ THẾ CHUNG",
+        "gender": "ANH ",
+        "department": "TTKD2",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "89",
+        "idst": "3122",
+        "name": "LÂM BẢO YẾN",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "90",
+        "idst": "3123",
+        "name": "NGUYỄN NGUYỆT MINH",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "91",
+        "idst": "3124",
+        "name": "DƯƠNG QUỐC VIỆT",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "92",
+        "idst": "3126",
+        "name": "PHẠM TUẤN NAM",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "93",
+        "idst": "3128",
+        "name": "NGUYỄN THẾ HƯỞNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "94",
+        "idst": "3131",
+        "name": "ĐẶNG XUÂN DUY",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "95",
+        "idst": "3132",
+        "name": "VŨ HOÀNG ",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "96",
+        "idst": "3133",
+        "name": "PHẠM VĂN ĐẠT",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "97",
+        "idst": "3134",
+        "name": "PHẠM DIỆU HUYỀN",
+        "gender": "CHỊ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "98",
+        "idst": "3135",
+        "name": "TRỊNH XUÂN ĐẠT",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "99",
+        "idst": "3136",
+        "name": "NGUYỄN HOÀNG DƯƠNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "100",
+        "idst": "3137",
+        "name": "NGUYỄN CÔNG TÌNH",
+        "gender": "ANH ",
+        "department": "TTKD2",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "101",
+        "idst": "3140",
+        "name": "BÙI ĐÌNH THIÊN TÌNH",
+        "gender": "ANH ",
+        "department": "TTPM",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "102",
+        "idst": "3141",
+        "name": "LÊ CÔNG MẠNH",
+        "gender": "ANH ",
+        "department": "TTKD1",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "103",
+        "idst": "3142",
+        "name": "VŨ HỮU MINH ",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "104",
+        "idst": "3143",
+        "name": "LÊ TRUNG KIÊN",
+        "gender": "ANH ",
+        "department": "TTKD1",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "105",
+        "idst": "3144",
+        "name": "CAO MINH TÂM",
+        "gender": "ANH ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "106",
+        "idst": "3145",
+        "name": "NGÔ GIA HƯNG",
+        "gender": "ANH ",
+        "department": "TTPM",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "107",
+        "idst": "3146",
+        "name": "ĐẶNG THANH BÌNH",
+        "gender": "ANH ",
+        "department": "TTPM",
+        "hasPrise": "0",
+        "vp": "1"
+    },
+    {
+        "id": "108",
+        "idst": "0266",
+        "name": "HUỲNH PHƯỚC THUẬN",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "2"
+    },
+    {
+        "id": "109",
+        "idst": "0401",
+        "name": "HUỲNH THÀNH CÔNG",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "2"
+    },
+    {
+        "id": "110",
+        "idst": "3075",
+        "name": "HÀ ĐỨC TÀI",
+        "gender": "ANH ",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "2"
     }
 ]
 
-const female = [
+const vphcm = [
     {
         "id": "1",
-        "idst": "3083",
-        "name": "NGUYỄN THỊ HOÀI TRANG",
-        "department": "MUA HÀNG & HTKD",
+        "idst": "0002",
+        "name": "HOÀNG THỊ TÚ ANH",
+        "gender": "CHỊ",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "2",
-        "idst": "3086",
-        "name": "HOÀNG VŨ DƯƠNG",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "0010",
+        "name": "NGUYỄN VŨ TRUNG THÀNH",
+        "gender": "ANH",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "3",
-        "idst": "3090",
-        "name": "NGUYỄN DUY THÀNH",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0012",
+        "name": "LƯƠNG LÊ TUẤN",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "4",
-        "idst": "3091",
-        "name": "NGUYỄN ĐỨC HOÀNG",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0014",
+        "name": "THANG NGỌC BẢO TRÂN",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "5",
-        "idst": "3094",
-        "name": "NGUYỄN THỊ HÀ ANH",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0015",
+        "name": "TRỊNH THỊ THANH HUYỀN",
+        "gender": "CHỊ",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "6",
-        "idst": "3095",
-        "name": "NGUYỄN HOÀNG NAM",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "0043",
+        "name": "NGUYỄN VĂN BÍNH",
+        "gender": "ANH",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "7",
-        "idst": "3098",
-        "name": "NGUYỄN THANH TÙNG",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0048",
+        "name": "TRỊNH VIẾT DŨNG",
+        "gender": "ANH",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "8",
-        "idst": "3099",
-        "name": "DƯƠNG HOÀNG GIANG",
-        "department": "TRUNG TÂM PHẦN MỀM",
+        "idst": "0057",
+        "name": "NGUYỄN VĂN DỰ",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "9",
-        "idst": "3100",
-        "name": "TRƯƠNG KHÁNH LINH",
-        "department": "NHÂN SỰ & TRUYỀN THÔNG",
+        "idst": "0076",
+        "name": "ĐỖ THỊ NGỌC CHÂU",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "10",
-        "idst": "3101",
-        "name": "TÔ THẾ DŨNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0089",
+        "name": "NGUYỄN TRÍ CƯƠNG",
+        "gender": "ANH",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "11",
-        "idst": "3102",
-        "name": "CHỬ VĂN HOÀNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0098",
+        "name": "ĐẶNG THỊ KIM KHÁNH",
+        "gender": "CHỊ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "12",
-        "idst": "3104",
-        "name": "DƯƠNG QUANG PHÚC",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0117",
+        "name": "NGHÊ THỊ PHƯƠNG UYÊN",
+        "gender": "CHỊ",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "13",
-        "idst": "3106",
-        "name": "LÊ NGỌC ANH",
-        "department": "MUA HÀNG & HTKD",
+        "idst": "0118",
+        "name": "NGUYỄN NGỌC CHÂU",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "14",
-        "idst": "3108",
-        "name": "VŨ ĐÌNH TRUNG",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0119",
+        "name": "PHẠM THỊ CẨM CHÂU",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "15",
-        "idst": "3109",
-        "name": "NGUYỄN THỊ UYÊN",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0123",
+        "name": "HUỲNH THẾ PHƯƠNG",
+        "gender": "ANH",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "16",
-        "idst": "3111",
-        "name": "NGUYỄN KHÁNH LINH",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0127",
+        "name": "NGUYỄN TRUNG HẢI",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "17",
-        "idst": "3112",
-        "name": "LÊ THỊ THU HƯƠNG",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0136",
+        "name": "NGUYỄN VIỆT HẢI",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "18",
-        "idst": "3113",
-        "name": "NGUYỄN DUY LINH",
-        "department": "TRUNG TÂM PHẦN MỀM",
+        "idst": "0173",
+        "name": "VŨ THANH NGUYỆT",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "19",
-        "idst": "3114",
-        "name": "TRẦN VŨ VINH",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0203",
+        "name": "LÊ HOÀNG NGUYÊN",
+        "gender": "ANH",
+        "department": "SAIGONCTT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "20",
-        "idst": "3115",
-        "name": "NGUYỄN THỊ HẠNH",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0257",
+        "name": "TRẦN THỊ THANH THẢO",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "21",
-        "idst": "3117",
-        "name": "NGUYỄN HOÀNG DƯƠNG",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "0200",
+        "name": "CÔ THỊ MỸ DUNG",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "22",
-        "idst": "3118",
-        "name": "NGUYỄN HOÀNG MINH",
-        "department": "DTS TELECOM",
+        "idst": "0350",
+        "name": "NGUYỄN VŨ THANH TÂM",
+        "gender": "ANH",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "23",
-        "idst": "3120",
-        "name": "PHẠM DUY HIỆP",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0361",
+        "name": "TRẦN THÀNH TRÍ",
+        "gender": "ANH",
+        "department": "SAIGONCTT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "24",
-        "idst": "3121",
-        "name": "NGÔ THẾ CHUNG",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "0382",
+        "name": "NGUYỄN VĂN THÀNH",
+        "gender": "ANH",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "25",
-        "idst": "3122",
-        "name": "LÂM BẢO YẾN",
-        "department": "NHÂN SỰ & TRUYỀN THÔNG",
+        "idst": "0386",
+        "name": "HUỲNH THỊ AN NY",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "26",
-        "idst": "3123",
-        "name": "NGUYỄN NGUYỆT MINH",
-        "department": "TTKD DỊCH VỤ ĐÀO TẠO",
+        "idst": "0404",
+        "name": "NGUYỄN HOÀNG VIỆT",
+        "gender": "ANH",
+        "department": "TTKD MIỀN NAM",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "27",
-        "idst": "3124",
-        "name": "DƯƠNG QUỐC VIỆT",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0408",
+        "name": "NGUYỄN VĂN KIÊN",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "28",
-        "idst": "3126",
-        "name": "PHẠM TUẤN NAM",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0430",
+        "name": "HUỲNH THỊ KIM NGỌC",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "29",
-        "idst": "3128",
-        "name": "NGUYỄN THẾ HƯỞNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0420",
+        "name": "NGUYỄN THANH THẢO",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "30",
-        "idst": "3131",
-        "name": "ĐẶNG XUÂN DUY",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "0480",
+        "name": "NGUYỄN THỊ THANH HƯƠNG",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "31",
-        "idst": "3132",
-        "name": "VŨ HOÀNG ",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "6001",
+        "name": "NGUYỄN THANH TUẤN",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "32",
-        "idst": "3133",
-        "name": "PHẠM VĂN ĐẠT",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "6002",
+        "name": "LÊ THỊ BÍCH TRÂM",
+        "gender": "CHỊ",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "33",
-        "idst": "3134",
-        "name": "PHẠM DIỆU HUYỀN",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "6013",
+        "name": "TRẦN VIỆT DŨNG",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "34",
-        "idst": "3135",
-        "name": "TRỊNH XUÂN ĐẠT",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "6014",
+        "name": "NGUYỄN TUẤN PHƯƠNG",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "35",
-        "idst": "3136",
-        "name": "NGUYỄN HOÀNG DƯƠNG",
-        "department": "DỊCH VỤ TRIỂN KHAI",
+        "idst": "6043",
+        "name": "MAI THÀNH TÂM",
+        "gender": "ANH",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "36",
-        "idst": "3137",
-        "name": "NGUYỄN CÔNG TÌNH",
-        "department": "TTKD KHỐI KHÁCH HÀNG CHÍNH PHỦ NGÂN HÀNG DOANH NGHIỆP",
+        "idst": "6069",
+        "name": "NGUYỄN VĂN TÁM",
+        "gender": "ANH",
+        "department": "VP HĐQT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "37",
-        "idst": "3140",
-        "name": "BÙI ĐÌNH THIÊN TÌNH",
-        "department": "TRUNG TÂM PHẦN MỀM",
+        "idst": "6075",
+        "name": "ĐẶNG THỊ TƯƠI",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "38",
-        "idst": "3141",
-        "name": "LÊ CÔNG MẠNH",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "6078",
+        "name": "HUỲNH HUYỀN CHÂN",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "39",
-        "idst": "3142",
-        "name": "VŨ HỮU MINH ",
-        "department": "HÀNH CHÍNH TỔNG HỢP",
+        "idst": "6086",
+        "name": "NGUYỄN HƯNG",
+        "gender": "ANH",
+        "department": "TTKD MIỀN NAM",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
     },
     {
         "id": "40",
-        "idst": "3143",
-        "name": "LÊ TRUNG KIÊN",
-        "department": "TTKD KHỐI KHÁCH HÀNG VIỄN THÔNG VÀ TRUYỀN HÌNH",
+        "idst": "6085",
+        "name": "NGUYỄN VĂN ANH TRỌNG",
+        "gender": "ANH",
+        "department": "SAIGONCTT",
         "hasPrise": "0",
-        "gender": "0"
+        "vp": "0"
+    },
+    {
+        "id": "41",
+        "idst": "6093",
+        "name": "NGUYỄN MINH DƯƠNG",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "42",
+        "idst": "6094",
+        "name": "TRƯƠNG MINH ĐẠT",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "43",
+        "idst": "6095",
+        "name": "LÊ MINH ĐỨC",
+        "gender": "ANH",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "44",
+        "idst": "6102",
+        "name": "LÊ THỊ THÙY LINH",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "45",
+        "idst": "6111",
+        "name": "LÊ ANH TUẤN",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "46",
+        "idst": "6113",
+        "name": "NGUYỄN NGỌC HOÀI ÂN",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "47",
+        "idst": "6114",
+        "name": "NGUYỄN THỊ XUÂN TRANG",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "48",
+        "idst": "6117",
+        "name": "NGUYỄN TRẦN VIỆT HẰNG",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "49",
+        "idst": "6120",
+        "name": "NGUYỄN TẤT TUẤN",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "50",
+        "idst": "6124",
+        "name": "LÊ TRỌNG VINH",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "51",
+        "idst": "6125",
+        "name": "HUỲNH HOÀNG TIẾN ĐẠT",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "52",
+        "idst": "6126",
+        "name": "PHẠM THỊ DIỄM TRANG",
+        "gender": "CHỊ",
+        "department": "SAIGONCTT",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "53",
+        "idst": "6129",
+        "name": "NGUYỄN THỊ KIM ANH",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "54",
+        "idst": "6130",
+        "name": "NGUYỄN THỊ NHUNG",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "55",
+        "idst": "6131",
+        "name": "NGUYỄN VŨ THÚY NGA",
+        "gender": "CHỊ",
+        "department": "BAN TCKT",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "56",
+        "idst": "6134",
+        "name": "MAI TÂM VŨ",
+        "gender": "ANH",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "57",
+        "idst": "6135",
+        "name": "NGUYỄN MINH TÂN",
+        "gender": "ANH",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "58",
+        "idst": "6136",
+        "name": "TỪ TUYẾT NHI",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "59",
+        "idst": "6137",
+        "name": "LÊ THỊ NGỌC THẢO",
+        "gender": "CHỊ",
+        "department": "BAN HCTH",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "60",
+        "idst": "6139",
+        "name": "HUỲNH TRẦN KIM THOA",
+        "gender": "CHỊ",
+        "department": "BAN NS - TT",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "61",
+        "idst": "6144",
+        "name": "NGUYỄN VĂN THANH PHONG",
+        "gender": "ANH",
+        "department": "KHỐI DVTK",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "62",
+        "idst": "6147",
+        "name": "NGUYỄN THỊ MINH TUYẾT",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "63",
+        "idst": "6148",
+        "name": "DƯƠNG THỊ NGỌC TRÂN",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "64",
+        "idst": "6149",
+        "name": "NGUYỄN TƯỜNG GIÁNG MY",
+        "gender": "CHỊ",
+        "department": "BAN MH & HTKD",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "65",
+        "idst": "0003",
+        "name": "LÊ QUANG CHIỂU",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "66",
+        "idst": "0034",
+        "name": "ĐINH THỊ MAI LAN",
+        "gender": "CHỊ",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "67",
+        "idst": "0193",
+        "name": "HOÀNG THÁI HÒA",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "68",
+        "idst": "6072",
+        "name": "TRẦN HỒ PHƯƠNG NAM",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "69",
+        "idst": "6074",
+        "name": "DU NGUYÊN CHƯƠNG",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "70",
+        "idst": "6096",
+        "name": "PHẠM CÔNG THÀNH",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "71",
+        "idst": "6123",
+        "name": "NGUYỄN TẤN VƯƠNG",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "72",
+        "idst": "0021",
+        "name": "NGUYỄN THỊ HIỀN",
+        "gender": "CHỊ",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "73",
+        "idst": "6112",
+        "name": "TRẦN LÊ BẢO TRINH",
+        "gender": "CHỊ",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "74",
+        "idst": "6140",
+        "name": "NGUYỄN THỊ THÙY DUNG",
+        "gender": "CHỊ",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "75",
+        "idst": "6141",
+        "name": "LÊ HOÀNG QUÂN",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "76",
+        "idst": "6142",
+        "name": "TRẦN NGUYỄN DUNG HẠ",
+        "gender": "CHỊ",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "77",
+        "idst": "6145",
+        "name": "VÕ VĂN KHÔI",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "78",
+        "idst": "6146",
+        "name": "PHẠM ĐÌNH TẠO",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
+    },
+    {
+        "id": "79",
+        "idst": "6143",
+        "name": "PHẠM NGỌC QUÝ",
+        "gender": "ANH",
+        "department": "DTS TELECOM",
+        "hasPrise": "0",
+        "vp": "0"
     }
 ]
