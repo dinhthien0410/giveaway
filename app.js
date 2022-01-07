@@ -15,17 +15,17 @@ const animation = (qSelector, start = 0, end, duration = 1000) => {
 function setInit() {
     window.location.reload();
     console.clear();
-}
+};
 
 function setStaffhasPrise(staff) {
     document.getElementById("loading").style.display = "none";
-    document.getElementById("staffHasPrise").innerHTML = (`<p class="winner-staff">${staff.name} - ${staff.idst}</p>`);
+    document.getElementById("staffHasPrise").innerHTML = (`<p class="winner-staff">${staff.NAME} - ${staff.MSNV}</p>`);
     document.getElementById("changeButton").innerHTML = (`<div class="confirmButton"  onclick="showStaffAndPrise()"></div>`)
-}
+};
 
 function showStaffAndPrise() {
     const staffhasprise = JSON.parse(localStorage.getItem("staffHasPrise") || "[]");
-    const prize = staffhasprise.hasPrise;
+    const prize = staffhasprise.HASPRIZE;
     if (prize === 1) {
         prise = "Giải Nhất";
         value = "Mười tỏi"
@@ -36,14 +36,8 @@ function showStaffAndPrise() {
         prise = "Giải Ba";
         value = "2 tỏi";
     };
-    const daden = staffhasprise.gender;
-    if (staffhasprise.vp === "1") {
-        vp = "VP HN";
-    } else if (staffhasprise.vp === "2") {
-        vp = "VP ĐN";
-    } else {
-        vp = "VP HCM"
-    };
+    const daden = staffhasprise.GENDER;
+    const vp = staffhasprise.VP;
     var confettiSettings = { target: 'my-canvas' };
     var confetti = new ConfettiGenerator(confettiSettings);
     document.getElementById("my-canvas").hidden = false;
@@ -57,56 +51,56 @@ function showStaffAndPrise() {
     document.getElementById("staffHasPrise").innerHTML = (`
     <div class="awards">
         <p class="priseAndGifts">${prise}</p>
-        <p class="staff">${daden} ${staffhasprise.name}</p>
-        <p class="staff">${staffhasprise.department} - ${vp}</p>
+        <p class="staff">${daden} ${staffhasprise.NAME}</p>
+        <p class="staff">${staffhasprise.DEPARTMENT} - ${vp}</p>
         <p class="priseAndGifts">${value}</p>
     </div>`);
     document.getElementById("changeButton").style.display = "none";
     document.getElementById("selectValue").hidden = true;
     document.getElementById("loading").hidden = true;
     document.getElementById("continueButton").hidden = false;
-}
+};
 
-const filterListStaff = (listStaff, staffRandom) => {
-    const listhaspr = browseList();
-    if (listhaspr.length > 0) {
-        for (let i = 0; i < listhaspr.length; i++) {
-            for (let j = 0; j < listStaff.length; j++) {
-                if (listStaff[j].idst === listhaspr[i]) {
-                    const newList = listStaff.splice(j, 1);
-                    const lastList = listStaff.filter(n => !newList.includes(n));
-                    setTimeout(function () {
-                        setStaffHasPriseToLocal(lastList, staffRandom);
-                    }, 3000);
-                }
-            }
-        }
-    } else {
-        setTimeout(function () {
-            setStaffHasPriseToLocal(listStaff, staffRandom);
-        }, 3000);
-    }
-}
+// const filterListStaff = (listStaff, staffRandom) => {
+//     const listhaspr = browseList();
+//     if (listhaspr.length > 0) {
+//         for (let i = 0; i < listhaspr.length; i++) {
+//             for (let j = 0; j < listStaff.length; j++) {
+//                 if (listStaff[j].idst === listhaspr[i]) {
+//                     const newList = listStaff.splice(j, 1);
+//                     const lastList = listStaff.filter(n => !newList.includes(n));
+//                     setTimeout(function () {
+//                         setStaffHasPriseToLocal(lastList, staffRandom);
+//                     }, 3000);
+//                 }
+//             }
+//         }
+//     } else {
+//         setTimeout(function () {
+//             setStaffHasPriseToLocal(listStaff, staffRandom);
+//         }, 3000);
+//     }
+// }
 
-function browseList() {
-    let listStaffHasPrise = [];
-    const list = [];
-    let storage = localStorage.getItem('listStaffHasPrise');
-    if (storage) {
-        listStaffHasPrise = JSON.parse(storage);
-    }
-    for (let i = 0; i < listStaffHasPrise.length; i++) {
-        list.push(listStaffHasPrise[i].idst);
-    }
-    return list;
-}
+// function browseList() {
+//     let listStaffHasPrise = [];
+//     const list = [];
+//     let storage = localStorage.getItem('listStaffHasPrise');
+//     if (storage) {
+//         listStaffHasPrise = JSON.parse(storage);
+//     }
+//     for (let i = 0; i < listStaffHasPrise.length; i++) {
+//         list.push(listStaffHasPrise[i].idst);
+//     }
+//     return list;
+// }
 
 function setStaffHasPriseToLocal(listStaff, staffRandom) {
     let listStaffHasPrise = [];
     const value = getPrise();
     for (let i = 0; i < listStaff.length; i++) {
-        if (listStaff[i].idst === staffRandom.idst) {
-            listStaff[i].hasPrise = value;
+        if (listStaff[i].MSNV === staffRandom.MSNV) {
+            listStaff[i].HASPRIZE = value;
             localStorage.setItem("staffHasPrise", JSON.stringify(listStaff[i]));
             let storage = localStorage.getItem('listStaffHasPrise');
             if (storage) {
@@ -119,24 +113,26 @@ function setStaffHasPriseToLocal(listStaff, staffRandom) {
             localStorage.setItem('listStaffHasPrise', JSON.stringify(listStaffHasPrise));
             setTimeout(function () {
                 setStaffhasPrise(listStaff[i]);
-            }, 5000);
+            }, 8000);
         }
     }
-}
+};
 
 
 function randomStaff() {
     const vp = getVp();
     if (vp === 1) {
-        listStaff = vphn;
+        const listHN = JSON.parse(localStorage.getItem('HN'));
+        const listDN = JSON.parse(localStorage.getItem('ĐN'));
+        listStaff = listHN.concat(listDN);
     }
     if (vp === 0) {
-        listStaff = vphcm;
+        listStaff = JSON.parse(localStorage.getItem('HCM'));
     }
     const staffRandom = listStaff[Math.floor(Math.random() * listStaff.length)];
-    filterListStaff(listStaff, staffRandom);
-    return staffRandom.idst;
-}
+    setStaffHasPriseToLocal(listStaff, staffRandom);
+    return staffRandom.MSNV;
+};
 
 function getPrise() {
     const prise = document.querySelector("#prise");
@@ -147,16 +143,16 @@ function getPrise() {
     } else if (prise.value === "3") {
         return 3;
     }
-}
+};
 
 function getVp() {
     const vp = document.querySelector("#vp");
     if (vp.value === "1") {
         return 1;
-    } else if (vp.value === "2") {
+    } else if (vp.value === "0") {
         return 0;
     }
-}
+};
 
 function loading() {
     document.getElementById("selectValue").style.display = "none";
@@ -166,7 +162,7 @@ function loading() {
     </div>`);
     document.getElementById("changeButton").innerHTML = "";
     move();
-}
+};
 
 function rollingNumber(aclass, index, numberAfterRandom) {
     for (let i = 0; i <= index; i++) {
@@ -177,11 +173,23 @@ function rollingNumber(aclass, index, numberAfterRandom) {
     setTimeout(function () {
         animation(aclass, 0, numberAfterRandom, 650);
     }, 100 + index * 500);
-}
+};
 
 function roll() {
-    const dem = browseList();
-    // if (dem.length <= 5) {
+    let HN = [];
+    let HCM = [];
+    let storage1 = localStorage.getItem('HN');
+    let storage2 = localStorage.getItem('HCM');
+    if (storage1) {
+        HN = JSON.parse(storage1);
+    }
+    if (storage2) {
+        HCM = JSON.parse(storage2);
+    }
+    if (HN.length == 0 || HCM.length == 0) {
+        alert('Vui lòng thêm danh sách nhân viên từ hai văn phòng.')
+    } else {
+        document.getElementById("addList").hidden=true;
         async function asyncGetVp() {
             const result = await getVp();
             try {
@@ -204,27 +212,50 @@ function roll() {
             }
         }
         asyncGetVp();
-    // } else {
-        // var modal = document.getElementById("myModal");
-        // modal.style.display = "block";
-    // }
-}
+    }
+};
 
-// function modal() {
-//     // Get the modal
-//     var modal = document.getElementById("myModal");
+var ExcelToJSON = function (name) {
 
-//     // Get the button that opens the modal
-//     var btn = document.getElementById("myBtn");
+    this.parseExcel = function (file) {
+        var reader = new FileReader();
 
-//     // Get the <span> element that closes the modal
-//     var span = document.getElementsByClassName("close")[0];
-// }
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var workbook = XLSX.read(data, {
+                type: 'binary'
+            });
+            workbook.SheetNames.forEach(function (sheetName) {
+                var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                var json_object = JSON.stringify(XL_row_object);
+                console.log(JSON.parse(json_object));
+                localStorage.setItem(sheetName, json_object);
+            })
+        };
 
-// function closeModal(){
-//     var modal = document.getElementById("myModal");
-//     modal.style.display = "none";
-// }
+        reader.onerror = function (ex) {
+            console.log(ex);
+        };
+
+        reader.readAsBinaryString(file);
+    };
+};
+
+function handleFileSelect(evt) {
+
+    var files = evt.target.files; // FileList object
+    var xl2json = new ExcelToJSON("listStaffHN");
+    xl2json.parseExcel(files[0]);
+};
+
+function handleFileSelect1(evt) {
+
+    var files = evt.target.files; // FileList object
+    var xl2json = new ExcelToJSON("listStaffHCM");
+    xl2json.parseExcel(files[0]);
+};
+
+
 
 var i = 0;
 function move() {
@@ -243,7 +274,7 @@ function move() {
             }
         }
     }
-}
+};
 
 function ConfettiGenerator(params) {
 
@@ -479,7 +510,7 @@ function ConfettiGenerator(params) {
         render: _render,
         clear: _clear
     }
-}
+};
 
 const vphn = [
     {

@@ -17,6 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Markazi+Text&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
 
 <body>
     <canvas id="my-canvas" hidden="true"></canvas>
@@ -59,7 +61,7 @@
                 </select>
                 <select style="margin-left: 20px;" name="" id="vp">
                     <option value="1">VP HN</option>
-                    <option value="2">VP HCM</option>
+                    <option value="0">VP HCM</option>
                 </select>
             </div>
             <div class="winner">
@@ -68,8 +70,49 @@
             <div id="changeButton">
                 <div class="randomButton" onclick="roll()"></div>
             </div>
+            <div id="addList">
+                <button id="myBtn">Thêm mới danh sách nhân viên</button>
+
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <form enctype="multipart/form-data">
+                            <p>Danh sách nhân viên:</p>
+                            <input id="uploadHN" type=file name="files[]">
+                        </form>
+                        <br />
+                        <button id="addBtn" onclick="document.getElementById('myModal').style.display='none'" type="submit">Thêm mới</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
+    <script>
+        document.getElementById('uploadHN').addEventListener('change', handleFileSelect, false);
+        var modal = document.getElementById("myModal");
+
+        var btn = document.getElementById("myBtn");
+
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>
