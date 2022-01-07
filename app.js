@@ -39,7 +39,7 @@ function showStaffAndPrise() {
     const daden = staffhasprise.gender;
     if (staffhasprise.vp === "1") {
         vp = "VP HN";
-    } else if ( staffhasprise.vp === "2") {
+    } else if (staffhasprise.vp === "2") {
         vp = "VP ĐN";
     } else {
         vp = "VP HCM"
@@ -67,6 +67,40 @@ function showStaffAndPrise() {
     document.getElementById("continueButton").hidden = false;
 }
 
+const filterListStaff = (listStaff, staffRandom) => {
+    const listhaspr = browseList();
+    if (listhaspr.length > 0) {
+        for (let i = 0; i < listhaspr.length; i++) {
+            for (let j = 0; j < listStaff.length; j++) {
+                if (listStaff[j].idst === listhaspr[i]) {
+                    const newList = listStaff.splice(j, 1);
+                    const lastList = listStaff.filter(n => !newList.includes(n));
+                    setTimeout(function () {
+                        setStaffHasPriseToLocal(lastList, staffRandom);
+                    }, 3000);
+                }
+            }
+        }
+    } else {
+        setTimeout(function () {
+            setStaffHasPriseToLocal(listStaff, staffRandom);
+        }, 3000);
+    }
+}
+
+function browseList() {
+    let listStaffHasPrise = [];
+    const list = [];
+    let storage = localStorage.getItem('listStaffHasPrise');
+    if (storage) {
+        listStaffHasPrise = JSON.parse(storage);
+    }
+    for (let i = 0; i < listStaffHasPrise.length; i++) {
+        list.push(listStaffHasPrise[i].idst);
+    }
+    return list;
+}
+
 function setStaffHasPriseToLocal(listStaff, staffRandom) {
     let listStaffHasPrise = [];
     const value = getPrise();
@@ -85,7 +119,7 @@ function setStaffHasPriseToLocal(listStaff, staffRandom) {
             localStorage.setItem('listStaffHasPrise', JSON.stringify(listStaffHasPrise));
             setTimeout(function () {
                 setStaffhasPrise(listStaff[i]);
-            }, 8000);
+            }, 5000);
         }
     }
 }
@@ -100,7 +134,7 @@ function randomStaff() {
         listStaff = vphcm;
     }
     const staffRandom = listStaff[Math.floor(Math.random() * listStaff.length)];
-    setStaffHasPriseToLocal(listStaff, staffRandom);
+    filterListStaff(listStaff, staffRandom);
     return staffRandom.idst;
 }
 
@@ -146,30 +180,51 @@ function rollingNumber(aclass, index, numberAfterRandom) {
 }
 
 function roll() {
-    async function asyncGetVp() {
-        const result = await getVp();
-        try {
-            var myMusic = document.getElementById("music");
-            myMusic.play();
-            const random = [randomStaff()];
-            const randomIdst = random.toString().split("");
-            rollingNumber("#randomNumber1", 4, randomIdst[0]);
-            rollingNumber("#randomNumber2", 7, randomIdst[1]);
-            rollingNumber("#randomNumber3", 10, randomIdst[2]);
-            rollingNumber("#randomNumber4", 13, randomIdst[3]);
-            async function asyncGetPrise() {
-                const result = await getPrise();
+    const dem = browseList();
+    // if (dem.length <= 5) {
+        async function asyncGetVp() {
+            const result = await getVp();
+            try {
+                var myMusic = document.getElementById("music");
+                myMusic.play();
+                const random = [randomStaff()];
+                const randomIdst = random.toString().split("");
+                rollingNumber("#randomNumber1", 4, randomIdst[0]);
+                rollingNumber("#randomNumber2", 7, randomIdst[1]);
+                rollingNumber("#randomNumber3", 10, randomIdst[2]);
+                rollingNumber("#randomNumber4", 13, randomIdst[3]);
+                async function asyncGetPrise() {
+                    const result = await getPrise();
 
-                loading();
+                    loading();
+                }
+                asyncGetPrise()
+            } catch (error) {
+                console.log(error);
             }
-            asyncGetPrise()
-        } catch (error) {
-            console.log(error);
         }
-    }
-    asyncGetVp();
+        asyncGetVp();
+    // } else {
+        // var modal = document.getElementById("myModal");
+        // modal.style.display = "block";
+    // }
 }
 
+// function modal() {
+//     // Get the modal
+//     var modal = document.getElementById("myModal");
+
+//     // Get the button that opens the modal
+//     var btn = document.getElementById("myBtn");
+
+//     // Get the <span> element that closes the modal
+//     var span = document.getElementsByClassName("close")[0];
+// }
+
+// function closeModal(){
+//     var modal = document.getElementById("myModal");
+//     modal.style.display = "none";
+// }
 
 var i = 0;
 function move() {
@@ -200,7 +255,7 @@ function ConfettiGenerator(params) {
         respawn: true, // Should confettis be respawned when getting out of screen?
         props: ['circle', 'square', 'triangle', 'line'], // Types of confetti
         // colors: [[255, 228, 80], [255, 255, 109], [255, 255, 137], [255, 255, 165]], // Colors to render confetti
-        colors: [[165,104,246],[230,61,135],[0,199,228],[253,214,126]], // Colors to render confetti
+        colors: [[165, 104, 246], [230, 61, 135], [0, 199, 228], [253, 214, 126]], // Colors to render confetti
         clock: 20, // Speed of confetti fall
         interval: null, // Draw interval holder
         rotate: false, // Whenever to rotate a prop

@@ -19,17 +19,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
 
 <body>
+    <canvas id="my-canvas" hidden="true"></canvas>
+    <div style="display: none;">
+        <audio controls autoplay id="music">
+            <source src="xoso.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    <img class="imgBackground" src="assets/background-t.png" alt="">
+    <div class="logo">
+        <img style="width: 14%;" src="assets/logo1.svg" alt="">
+    </div>
     <div class="container">
-        <canvas id="my-canvas" hidden="true"></canvas>
-        <div style="display: none;">
-            <audio controls autoplay id="music">
-                <source src="xoso.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-        <div class="logo">
-            <img style="width: 14%;" src="assets/logo1.svg" alt="">
-        </div>
         <div class="content">
             <div id="banner">
                 <div class="randomNumber">
