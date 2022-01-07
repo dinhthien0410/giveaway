@@ -167,6 +167,7 @@ select {
   background-size: cover;
   width: 15vw;
   height: 5vw;
+  margin-top: 2vw;
 }
 
 .confirmButton {
