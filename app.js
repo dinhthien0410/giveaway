@@ -28,13 +28,13 @@ function showStaffAndPrise() {
     const prize = staffhasprise.HASPRIZE;
     if (prize === 1) {
         prise = "Giải Nhất";
-        value = "Mười tỏi"
+        value = "5 000 000Đ"
     } else if (prize === 2) {
         prise = "Giải Nhì";
-        value = "5 tỏi"
+        value = "3 000 000Đ"
     } else {
         prise = "Giải Ba";
-        value = "2 tỏi";
+        value = "2 000 000Đ";
     };
     const daden = staffhasprise.GENDER;
     const vp = staffhasprise.VP;
