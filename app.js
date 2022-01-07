@@ -49,12 +49,10 @@ function showStaffAndPrise() {
     document.getElementById("banner").innerHTML = (`<div class="congratulation"> 
     </div>`)
     document.getElementById("staffHasPrise").innerHTML = (`
-    <div class="awards">
         <p class="priseAndGifts">${prise}</p>
         <p class="staff">${daden} ${staffhasprise.NAME}</p>
         <p class="staff">${staffhasprise.DEPARTMENT} - ${vp}</p>
-        <p class="priseAndGifts">${value}</p>
-    </div>`);
+        <p class="priseAndGifts">${value}</p>`);
     document.getElementById("changeButton").style.display = "none";
     document.getElementById("selectValue").hidden = true;
     document.getElementById("loading").hidden = true;
@@ -189,7 +187,7 @@ function roll() {
     if (HN.length == 0 || HCM.length == 0) {
         alert('Vui lòng thêm danh sách nhân viên từ hai văn phòng.')
     } else {
-        document.getElementById("addList").hidden=true;
+        document.getElementById("addList").style.display ="none";
         async function asyncGetVp() {
             const result = await getVp();
             try {

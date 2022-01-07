@@ -56,6 +56,7 @@ body {
 }
 
 select {
+  font-family: "Markazi Text", serif;
   color: #db5015;
   background-color: #ffac88;
   font-weight: bold;
@@ -76,7 +77,6 @@ select {
 }
 
 #staffHasPrise .winner-staff {
-  margin-top: 2vw;
   font-size: 3vw;
   line-height: initial;
   font-family: "Markazi Text", serif;
