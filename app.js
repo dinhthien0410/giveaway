@@ -267,7 +267,10 @@ function move() {
         }
     }
 };
-
+function onClickLogo(){
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+}
 function ConfettiGenerator(params) {
 
     var appstate = {

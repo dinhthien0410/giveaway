@@ -29,11 +29,11 @@
         </audio>
     </div>
     <img class="imgBackground" src="assets/background-t.png" alt="">
-    <div class="logo">
-        <img style="width: 14%;" src="assets/logo1.svg" alt="">
-    </div>
     <div class="container">
         <div class="content">
+            <div class="logo">
+                <img id="myBtn" style="width: 14%;cursor: pointer;" src="assets/logo1.svg" onclick="onClickLogo()" alt="">
+            </div>
             <div id="banner">
                 <div class="randomNumber">
                     <p id="randomNumber1"></p>
@@ -71,11 +71,8 @@
                 <div class="randomButton" onclick="roll()"></div>
             </div>
             <div id="addList">
-                <button id="myBtn"><img width="30px" height="30px"src="assets/staffIcon.png" alt=""></button>
-
-                <!-- The Modal -->
+                <!-- <button id="myBtn"><img height="30px" src="assets/logo.png" alt=""></button> -->
                 <div id="myModal" class="modal">
-                    <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <form enctype="multipart/form-data">
@@ -83,7 +80,8 @@
                             <input id="uploadHN" type=file name="files[]">
                         </form>
                         <br />
-                        <button id="addBtn" onclick="document.getElementById('myModal').style.display='none'" type="submit">Thêm mới</button>
+                        <button id="addBtn" onclick="document.getElementById('myModal').style.display='none'"
+                            type="submit">Thêm mới</button>
                     </div>
                 </div>
             </div>
@@ -93,13 +91,8 @@
         document.getElementById('uploadHN').addEventListener('change', handleFileSelect, false);
         var modal = document.getElementById("myModal");
 
-        var btn = document.getElementById("myBtn");
-
         var span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
 
         span.onclick = function () {
             modal.style.display = "none";
