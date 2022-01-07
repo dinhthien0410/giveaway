@@ -52,7 +52,8 @@ function showStaffAndPrise() {
         <p class="priseAndGifts">${prise}</p>
         <p class="staff">${daden} ${staffhasprise.NAME}</p>
         <p class="staff">${staffhasprise.DEPARTMENT} - ${vp}</p>
-        <p class="priseAndGifts">${value}</p>`);
+        <p class="priseAndGifts">${value}</p>`
+    );
     document.getElementById("changeButton").style.display = "none";
     document.getElementById("selectValue").hidden = true;
     document.getElementById("loading").hidden = true;
@@ -187,7 +188,7 @@ function roll() {
     if (HN.length == 0 || HCM.length == 0) {
         alert('Vui lòng thêm danh sách nhân viên từ hai văn phòng.')
     } else {
-        document.getElementById("addList").style.display ="none";
+        document.getElementById("addList").style.display = "none";
         async function asyncGetVp() {
             const result = await getVp();
             try {
