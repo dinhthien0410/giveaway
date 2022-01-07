@@ -60,41 +60,7 @@ function showStaffAndPrise() {
     document.getElementById("continueButton").hidden = false;
 };
 
-// const filterListStaff = (listStaff, staffRandom) => {
-//     const listhaspr = browseList();
-//     if (listhaspr.length > 0) {
-//         for (let i = 0; i < listhaspr.length; i++) {
-//             for (let j = 0; j < listStaff.length; j++) {
-//                 if (listStaff[j].idst === listhaspr[i]) {
-//                     const newList = listStaff.splice(j, 1);
-//                     const lastList = listStaff.filter(n => !newList.includes(n));
-//                     setTimeout(function () {
-//                         setStaffHasPriseToLocal(lastList, staffRandom);
-//                     }, 3000);
-//                 }
-//             }
-//         }
-//     } else {
-//         setTimeout(function () {
-//             setStaffHasPriseToLocal(listStaff, staffRandom);
-//         }, 3000);
-//     }
-// }
-
-// function browseList() {
-//     let listStaffHasPrise = [];
-//     const list = [];
-//     let storage = localStorage.getItem('listStaffHasPrise');
-//     if (storage) {
-//         listStaffHasPrise = JSON.parse(storage);
-//     }
-//     for (let i = 0; i < listStaffHasPrise.length; i++) {
-//         list.push(listStaffHasPrise[i].idst);
-//     }
-//     return list;
-// }
-
-function setStaffHasPriseToLocal(listStaff, staffRandom) {
+function setStaffHasPriseToLocal(listStaff, staffRandom, vp) {
     let listStaffHasPrise = [];
     const value = getPrise();
     for (let i = 0; i < listStaff.length; i++) {
@@ -111,7 +77,14 @@ function setStaffHasPriseToLocal(listStaff, staffRandom) {
             }
             localStorage.setItem('listStaffHasPrise', JSON.stringify(listStaffHasPrise));
             setTimeout(function () {
-                setStaffhasPrise(listStaff[i]);
+                listStaff.splice(i, 1);
+                if (vp === 1) {
+                    localStorage.setItem("listStaffHN", JSON.stringify(listStaff));
+                } else {
+                    localStorage.setItem("listStaffHCM", JSON.stringify(listStaff));
+                }
+                const s = JSON.parse(localStorage.getItem("staffHasPrise"));
+                setStaffhasPrise(s);
             }, 8000);
         }
     }
@@ -120,16 +93,37 @@ function setStaffHasPriseToLocal(listStaff, staffRandom) {
 
 function randomStaff() {
     const vp = getVp();
+    let listStaffHN = [];
+    let listStaffHCM = [];
+    let storage1 = localStorage.getItem('listStaffHN');
+    let storage2 = localStorage.getItem('listStaffHCM');
+    if (storage1) {
+        listStaffHN = JSON.parse(storage1);
+    }
+    if (storage2) {
+        listStaffHCM = JSON.parse(storage2);
+    }
     if (vp === 1) {
         const listHN = JSON.parse(localStorage.getItem('HN'));
         const listDN = JSON.parse(localStorage.getItem('ĐN'));
-        listStaff = listHN.concat(listDN);
+        if (listStaffHN.length === 0) {
+            localStorage.setItem('listStaffHN', JSON.stringify(listHN.concat(listDN)));
+            listStaff = JSON.parse(localStorage.getItem('listStaffHN'));
+        } else {
+            listStaff = JSON.parse(localStorage.getItem('listStaffHN'));
+        }
     }
     if (vp === 0) {
-        listStaff = JSON.parse(localStorage.getItem('HCM'));
+        const listHCM = JSON.parse(localStorage.getItem('HCM'));
+        if (listStaffHCM.length === 0) {
+            localStorage.setItem('listStaffHCM', JSON.stringify(listHCM));
+            listStaff = JSON.parse(localStorage.getItem('listStaffHCM'));
+        } else {
+            listStaff = JSON.parse(localStorage.getItem('listStaffHCM'));
+        }
     }
     const staffRandom = listStaff[Math.floor(Math.random() * listStaff.length)];
-    setStaffHasPriseToLocal(listStaff, staffRandom);
+    setStaffHasPriseToLocal(listStaff, staffRandom, vp);
     return staffRandom.MSNV;
 };
 
@@ -227,7 +221,6 @@ var ExcelToJSON = function (name) {
             workbook.SheetNames.forEach(function (sheetName) {
                 var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                 var json_object = JSON.stringify(XL_row_object);
-                console.log(JSON.parse(json_object));
                 localStorage.setItem(sheetName, json_object);
             })
         };
