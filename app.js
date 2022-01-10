@@ -276,7 +276,7 @@ function onClickLogo() {
 function startCanvasConfetti() {
     var myCanvas = document.createElement('canvas');
     document.body.appendChild(myCanvas);
-    var end = Date.now() + (4 * 1000);
+    var end = Date.now() + (10 * 1000);
 
     // go Buckeyes!
     var colors = ['#FFFF33', '#ffffff'];
