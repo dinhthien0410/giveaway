@@ -79,7 +79,7 @@ select {
 }
 
 #staffHasPrise{
-  margin-top:3vw;
+  margin-top:2vw;
 }
 
 .winner-staff {
@@ -151,6 +151,7 @@ select {
   left: 70%;
   top: 50%;
   width: 100%;
+  z-index: 2;
 }
 
 #changeButton {
