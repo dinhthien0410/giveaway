@@ -272,7 +272,24 @@ function onClickLogo() {
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
 }
-
+function onClickAddNew() {
+    let HN = [];
+    let HCM = [];
+    let storage1 = localStorage.getItem('HN');
+    let storage2 = localStorage.getItem('HCM');
+    if (storage1) {
+        HN = JSON.parse(storage1);
+    }
+    if (storage2) {
+        HCM = JSON.parse(storage2);
+    }
+    if (HN.length == 0 || HCM.length == 0) {
+        alert('Không tìm thấy file! Yêu cầu nhập file đúng định dạng.')
+    } else {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+}
 function startCanvasConfetti() {
     var myCanvas = document.createElement('canvas');
     document.body.appendChild(myCanvas);

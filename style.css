@@ -171,6 +171,9 @@ select {
   margin-top: 2vw;
 }
 
+.randomButton:hover{
+  
+}
 .confirmButton {
   cursor: pointer;
   background: url(assets/xacnhan.svg);
