@@ -158,6 +158,7 @@ select {
   display: flex;
   justify-content: center;
   margin-top: 1vw;
+  width: 18vw;
 }
 
 .randomButton {
@@ -172,7 +173,7 @@ select {
 
 .custom-btn {
   margin-top: 2vw;
-  border: 10px solid #ffffff;
+  border: 2px solid #ffffff;
   font-family: 'Lato', sans-serif;
   background: transparent;
   cursor: pointer;
@@ -182,17 +183,19 @@ select {
 }
 
 .btn-5 {
+  background: #000;
+  color: #fff;
   padding: 0;
-  border: 5px;
+  border: none;
 }
 .btn-5:hover {
   background: transparent;
-  color: #ffffff;
+  color: #000;
    box-shadow:
    -7px -7px 20px 0px #fff9,
    -4px -4px 5px 0px #fff9,
-   7px 7px 20px 0px #ffffff,
-   4px 4px 5px 0px #ffffff;
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
 }
 .btn-5:before,
 .btn-5:after{
