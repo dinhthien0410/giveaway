@@ -38,10 +38,7 @@ function showStaffAndPrise() {
     };
     const daden = staffhasprise.GENDER;
     const vp = staffhasprise.VP;
-    // var confettiSettings = { target: 'my-canvas' };
-    // var confetti = new ConfettiGenerator(confettiSettings);
     document.getElementById("my-canvas").hidden = false;
-    // confetti.render();
     startCanvasConfetti();
     setTimeout(function () {
         confetti.clear();
@@ -197,7 +194,6 @@ function roll() {
                 rollingNumber("#randomNumber4", 13, randomIdst[3]);
                 async function asyncGetPrise() {
                     const result = await getPrise();
-
                     loading();
                 }
                 asyncGetPrise()
@@ -241,13 +237,6 @@ function handleFileSelect(evt) {
     xl2json.parseExcel(files[0]);
 };
 
-function handleFileSelect1(evt) {
-
-    var files = evt.target.files; // FileList object
-    var xl2json = new ExcelToJSON("listStaffHCM");
-    xl2json.parseExcel(files[0]);
-};
-
 
 
 var i = 0;
@@ -268,10 +257,12 @@ function move() {
         }
     }
 };
+
 function onClickLogo() {
     var modal = document.getElementById("myModal");
     modal.style.display = "block";
-}
+};
+
 function onClickAddNew() {
     let HN = [];
     let HCM = [];
@@ -283,11 +274,17 @@ function onClickAddNew() {
     if (storage2) {
         HCM = JSON.parse(storage2);
     }
-    if (HN.length == 0 || HCM.length == 0) {
-        alert('Không tìm thấy file! Yêu cầu nhập file đúng định dạng.')
+    if (HN.length === 0 || HCM.length === 0) {
+        alert("Yêu cầu nhập danh sách đầy đủ các văn phòng!")
     } else {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
+        console.log(HN[0].name);
+        if (HN[0].NAME === undefined || HN[0].DEPARTMENT === undefined || HN[0].HASPRIZE === undefined) {
+            alert("Vui lòng nhập file đúng định dạng!")
+        } else {
+            alert("Thêm mới thành công!");
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
     }
 }
 function startCanvasConfetti() {

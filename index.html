@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 
 <body>
     <canvas id="my-canvas" hidden="true"></canvas>
@@ -33,7 +33,8 @@
     <div class="container">
         <div class="content">
             <div class="logo">
-                <img id="myBtn" style="width: 14%;cursor: pointer;" src="assets/logo1.svg" onclick="onClickLogo()" alt="">
+                <img id="myBtn" style="width: 14%;cursor: pointer;" src="assets/logo1.svg" onclick="onClickLogo()"
+                    alt="">
             </div>
             <div id="banner">
                 <div class="randomNumber">
@@ -72,7 +73,6 @@
                 <div class="randomButton" onclick="roll()"></div>
             </div>
             <div id="addList">
-                <!-- <button id="myBtn"><img height="30px" src="assets/logo.png" alt=""></button> -->
                 <div id="myModal" class="modal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
@@ -81,8 +81,7 @@
                             <input id="uploadHN" type=file name="files[]">
                         </form>
                         <br />
-                        <button id="addBtn" onclick="onClickAddNew()"
-                            type="submit">Thêm mới</button>
+                        <button id="addBtn" onclick="onClickAddNew()" type="submit">Thêm mới</button>
                     </div>
                 </div>
             </div>

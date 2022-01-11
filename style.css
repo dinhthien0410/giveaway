@@ -260,19 +260,6 @@ select {
   cursor: pointer;
 }
 
-/* #myBtn{
-  background-color: #f44336;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 10px 4px;
-  cursor: pointer;
-  border-radius:3px;
-} */
-
 #addBtn{
   background-color: #f44336;
   border: none;
