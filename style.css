@@ -168,12 +168,57 @@ select {
   background-size: cover;
   width: 15vw;
   height: 5vw;
-  margin-top: 2vw;
 }
 
-.randomButton:hover{
-  
+.custom-btn {
+  margin-top: 2vw;
+  border: 10px solid #ffffff;
+  font-family: 'Lato', sans-serif;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
 }
+
+.btn-5 {
+  background: #ffffff;
+  color: #ffffff;
+  padding: 0;
+  border: 5px;
+}
+.btn-5:hover {
+  background: transparent;
+  color: #ffffff;
+   box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #ffffff,
+   4px 4px 5px 0px #ffffff;
+}
+.btn-5:before,
+.btn-5:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #ffffff;
+  transition:400ms ease all;
+}
+.btn-5:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.btn-5:hover:before,
+.btn-5:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
 .confirmButton {
   cursor: pointer;
   background: url(assets/xacnhan.svg);
