@@ -275,10 +275,12 @@ function onClickAddNew() {
         HCM = JSON.parse(storage2);
     }
     if (HN.length === 0 || HCM.length === 0) {
-        alert("Yêu cầu nhập danh sách đầy đủ các văn phòng!")
+        alert("Yêu cầu nhập danh sách đầy đủ các văn phòng!");
+        localStorage.clear();
     } else {
         console.log(HN[0].name);
         if (HN[0].NAME === undefined || HN[0].DEPARTMENT === undefined || HN[0].HASPRIZE === undefined) {
+            localStorage.clear();
             alert("Vui lòng nhập file đúng định dạng!")
         } else {
             alert("Thêm mới thành công!");
