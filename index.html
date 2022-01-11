@@ -69,10 +69,14 @@
             <div class="winner">
                 <div id="staffHasPrise"></div>
             </div>
-            <div id="changeButton">
-                <button class="custom-btn btn-5">
+            <div id="changeButton" class="center">
+                <button class="custom-btn btn" onclick="roll()">
+                    <svg  viewBox="0 0 180 60" >
+                        <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
+                        <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
+                    </svg>
                     <span>
-                        <div class="randomButton" onclick="roll()"></div>
+                        <div class="randomButton"></div>
                     </span>
                 </button>
             </div>
