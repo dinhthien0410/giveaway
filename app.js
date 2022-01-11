@@ -20,7 +20,7 @@ function setInit() {
 function setStaffhasPrise(staff) {
     document.getElementById("loading").style.display = "none";
     document.getElementById("staffHasPrise").innerHTML = (`<p class="winner-staff">${staff.NAME} - ${staff.MSNV}</p>`);
-    document.getElementById("changeButton").innerHTML = (`<div class="confirmButton"  onclick="showStaffAndPrise()"></div>`)
+    document.getElementById("changeButton").innerHTML = (`<div class="confirmButton" onclick="showStaffAndPrise()"></div>`)
 };
 
 function showStaffAndPrise() {
